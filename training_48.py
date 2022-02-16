@@ -23,6 +23,9 @@ import matplotlib.pyplot as plt
 from collections import Counter
 from utils import binary_focal_loss
 
+print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
+
+
 
 # In[2]:
 

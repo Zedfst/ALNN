@@ -15,8 +15,6 @@ class ALNNLayer(tf.keras.layers.Layer):
         self.prior_hours = prior_hours
         self.init_time = init_time
         self.time_space=time_space
-        self.maxpool=layers.MaxPooling1D(2)
-        self.aggregate_loss=tf.keras.losses.BinaryCrossentropy(from_logits=False)
         self.nr_ref_time_points=time_space
         
         
@@ -37,36 +35,36 @@ class ALNNLayer(tf.keras.layers.Layer):
         self.axis_3=input_shape[0][2]
         
         self.alpha = self.add_weight(shape=(self.nr_ref_time_points,1,1),
-                                 initializer='random_normal',
-                                 name='alpha',
-                                 dtype='float32',
-                                 trainable=True)
+                                  initializer='random_normal',
+                                  name='alpha',
+                                  dtype='float32',
+                                  trainable=True)
         
         self.w_v = self.add_weight(shape=(self.nr_ref_time_points,self.axis_2,input_shape[0][2]),
-                                 initializer='random_normal',
-                                 name='w_inyensity',
-                                 dtype='float32',
-                                 trainable=True)
+                                  initializer='random_normal',
+                                  name='w_inyensity',
+                                  dtype='float32',
+                                  trainable=True)
         
         
         self.w_t = self.add_weight(shape=(self.nr_ref_time_points,self.axis_2,input_shape[0][2],4),
-                                 initializer='random_normal',
-                                 name='w_tempo',
-                                 dtype='float32',
-                                 trainable=True)
+                                  initializer='random_normal',
+                                  name='w_tempo',
+                                  dtype='float32',
+                                  trainable=True)
         
         
         self.b_v= self.add_weight(shape=(self.nr_ref_time_points,1,input_shape[0][2]),
-                                 initializer='random_normal',
-                                 name='bias_intensity',
-                                 dtype='float32',
-                                 trainable=True)
+                                  initializer='random_normal',
+                                  name='bias_intensity',
+                                  dtype='float32',
+                                  trainable=True)
         
         self.b_t = self.add_weight(shape=(self.nr_ref_time_points,self.axis_2, self.axis_3,1),
-                                 initializer='random_normal',
-                                 name='bias_tempo',
-                                 dtype='float32',
-                                 trainable=True)
+                                  initializer='random_normal',
+                                  name='bias_tempo',
+                                  dtype='float32',
+                                  trainable=True)
         
     def call(self, inputs,training=None):
         self.X=inputs[0]
@@ -123,7 +121,6 @@ class ALNN_GRU(keras.Model):
         self.gru=layers.GRU(168,dropout=0.0000)
         self.dense=layers.Dense(1,activation='sigmoid')
         self.dropout_1=layers.Dropout(0.0)
-        self.kl = tf.keras.losses.KLDivergence()
         self.mse=tf.keras.losses.MeanSquaredError()
 
 
