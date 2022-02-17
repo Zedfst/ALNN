@@ -110,17 +110,20 @@ class ALNNLayer(tf.keras.layers.Layer):
     
 class ALNN_GRU(keras.Model):
     
-    def __init__(self,max_hour,init_time,time_interval):
+    def __init__(self,max_hour,init_time,time_interval,gru_units=168,gru_dropout=0.0,alnn_gru_dropout=0.0):
         super(ALNN_GRU, self).__init__()
         
         self.max_hour=max_hour
         self.init_time=init_time
         self.time_interval=time_interval
+	self.gru_units=gru_units
+        self.gru_dropout=gru_dropout
+        self.alnn_gru_dropout=alnn_gru_dropout
         
-        self.ALNNLayer=ALNNLayer(self.max_hour,init_time=self.init_time,time_space=self.time_interval)
-        self.gru=layers.GRU(168,dropout=0.0000)
+        self.alnn_layer=ALNNLayer(self.max_hour,init_time=self.init_time,time_space=self.time_interval)
+        self.gru=layers.GRU(self.gru_units,dropout=self.gru_dropout)
         self.dense=layers.Dense(1,activation='sigmoid')
-        self.dropout_1=layers.Dropout(0.0)
+        self.dropout_1=layers.Dropout(self.alnn_gru_dropout)
         self.mse=tf.keras.losses.MeanSquaredError()
 
 
@@ -131,7 +134,7 @@ class ALNN_GRU(keras.Model):
         self.d_t=tf.cast(inputs[3],tf.float32)
 
 
-        self.lattent_data=self.ALNNLayer([self.x,self.t,self.m,self.d_t])
+        self.lattent_data=self.alnn_layer([self.x,self.t,self.m,self.d_t])
 
         
         
