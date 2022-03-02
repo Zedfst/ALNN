@@ -1,3 +1,3 @@
 # ALNN
 Alignment driven Neural Network
-![](images/ALNN/images/nzamba1.png)
+![](images/nzamba1.png)
