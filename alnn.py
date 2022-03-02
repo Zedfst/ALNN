@@ -80,7 +80,7 @@ class ALNNLayer(tf.keras.layers.Layer):
         
         
 
-        self.diastance=tf.abs(self.t-tf.cast(self.nr_ref_time_points,tf.float32))                      
+        self.diastance=tf.abs(self.t-tf.cast(self.ref_time,tf.float32))                      
         self.kernel=tf.exp(-tf.cast(tf.nn.relu(self.alpha),tf.float32)*self.diastance)
         self.intensity=self.x*self.kernel
         
